@@ -204,7 +204,7 @@ module Ruboty
             def docker_rmi(message)
                 image_name = message[:image_name]
                 message.reply("Deleting from #{image_name}...")
-                image = ::Docker::Image.create('fromImage' => image_name).remove(force: true)
+                image = ::Docker::Image.get(image_name).remove(force: true)
                 message.reply image
             rescue => e
                 value = [e.class.name, e.message, e.backtrace].join("\n")
