@@ -128,10 +128,27 @@ module Ruboty
             end
 
             def docker_inspect(message)
-                inspect = ::Docker::Image.get(message[:image_name])
-                ap inspect
-                pp inspect
-                message.reply(pp inspect)
+                images = ::Docker::Image.get(message[:image_name])
+                rows   = []
+                rows.push ['ID', images.instance_variable_get(:@id)]
+                rows.push ['Architecture', images.instance_variable_get(:@info)['Architecture']]
+                rows.push ['Author', images.instance_variable_get(:@info)['Author']]
+                rows.push ['Command', images.instance_variable_get(:@info)['Config']['Cmd']]
+                rows.push ['Env', images.instance_variable_get(:@info)['Config']['Env']]
+                rows.push ['On Build', images.instance_variable_get(:@info)['Config']['OnBuild']]
+                rows.push ['Port Specs', images.instance_variable_get(:@info)['Config']['PortSpecs']]
+                rows.push ['User', images.instance_variable_get(:@info)['Config']['User']]
+                rows.push ['Volumes', images.instance_variable_get(:@info)['Config']['Volumes']]
+                rows.push ['Working Dir', images.instance_variable_get(:@info)['Config']['WorkingDir']]
+
+                table       = ::Terminal::Table.new title: 'DOCKER INSPECT', rows: rows
+                table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
+                message.reply(table, code: true)
+
+            rescue => e
+                value = [e.class.name, e.message, e.backtrace].join("\n")
+                message.reply value
+            ensure
             end
 
             def docker_ps(message)
