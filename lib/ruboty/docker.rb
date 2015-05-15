@@ -1,0 +1,11 @@
+require 'awesome_print'
+require 'pp'
+require 'coderay'
+require 'docker'
+require 'oj'
+require 'json'
+require 'slack'
+require 'terminal-table'
+
+require 'ruboty/docker/version'
+require 'ruboty/handlers/docker'
