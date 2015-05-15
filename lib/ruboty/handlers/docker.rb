@@ -71,9 +71,10 @@ module Ruboty
                     repository = image.info['RepoTags'].to_s.split(':')[0]
                     tag        = image.info['RepoTags'].to_s.split(':')[1]
                     id         = image.info['id'].to_s.scan(/.{1,#{12}}/)
-                    rows.push [repository[2..100], tag[0..-3], id[0]]
+                    size       = filesize_to_human(image.info['VirtualSize'])
+                    rows.push [repository[2..100], tag[0..-3], id[0], size]
                 end
-                table       = ::Terminal::Table.new headings: %w(REPOSITORY TAG IMAGEID), rows: rows
+                table       = ::Terminal::Table.new headings: ['REPOSITORY', 'TAG', 'IMAGE ID', 'VIRTUALSIZE'], rows: rows
                 table.style = { :padding_left => 0, :border_x => ' ', :border_y => ' ', :border_i => ' ' }
                 message.reply(table, code: true)
             rescue => e
