@@ -14,10 +14,10 @@ module Ruboty
             # on /docker exec\z/, name: 'docer_exec', description: 'Run a command in a running container'
             # on /docker export\z/, name: 'docker_export', description: 'Stream the contents of a container sa a tar archive'
             # on /docker history\z/, name: 'docker_history', description: 'Show the history of an image'
-            on /docker images\z/, name: 'docker_images', description: 'List images'
+            on /docker(?<debug>.+?)images\z/m, name: 'docker_images', description: 'List images'
             # on /docker import\z/, name: 'docker_import', description: 'Create a nev filesystem image from a container or image'
-            on /docker info\z/, name: 'docker_info', description: 'Display system-vide information'
-            on /docker inspect (?<image_name>.+)/, name: 'docker_inspect', description: 'Return low-level information on a contaitner or image'
+            on /docker(?<debug>.+?)info\z/m, name: 'docker_info', description: 'Display system-vide information'
+            on /docker(?<debug>.+?)inspect (?<image_name>.+)/m, name: 'docker_inspect', description: 'Return low-level information on a contaitner or image'
             # on /docker kill\z/, name: 'docker_kill', description: 'Kill a runnig container'
             # on /docker load\z/, name: 'docker_load', description: 'Load an image from a tar archive'
             # on /docker login (?<username>.+) (?<password>.+) (?<email>.+)/, name: 'docker_login', description: 'Register or Login to Docker reginstry server'
@@ -25,13 +25,13 @@ module Ruboty
             # on /docker logs\z/, name: 'docker_logs', description: 'Fetch the logs of a container'
             # on /docker port\z/, name: 'docker_port', description: 'Lookup the pubilc-facing port that is NAT-ed to PRIVATE_PORT'
             # on /docker pause\z/, name: 'docker_pause', description: 'Pause all processes whthin a container'
-            on /docker ps\z/, name: 'docker_ps', description: 'List containers'
-            on /docker pull (?<image_name>.+)/, name: 'docker_pull', description: 'Pull an image or a repository from a Docker registry server'
+            on /docker(?<debug>.+?)ps\z/m, name: 'docker_ps', description: 'List containers'
+            on /docker(?<debug>.+?)pull (?<image_name>.+)/m, name: 'docker_pull', description: 'Pull an image or a repository from a Docker registry server'
             # on /docker push\z/, name: 'docker_push', description: 'Push an image or a repository to a Docker rugistry server'
             # on /docker rename\z/, name: 'docker_rename', description: 'Rename an existing container'
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
-            on /docker rmi (?<image_name>.+)/, name: 'docker_rmi', description: 'Remove one or more images'
+            on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
             # on /docker run\z/, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
@@ -65,7 +65,8 @@ module Ruboty
 
             def docker_images(message)
                 images = ::Docker::Image.all
-                rows   = []
+                message.reply(images, code: true) if message[:debug] == ' -D '
+                rows = []
                 images.each do |image|
                     repository = image.info['RepoTags'].to_s.split(':')[0]
                     tag        = image.info['RepoTags'].to_s.split(':')[1]
@@ -84,6 +85,7 @@ module Ruboty
 
             def docker_info(message)
                 info = ::Docker.info
+                message.reply(info, code: true) if message[:debug] == ' -D '
                 rows = []
                 rows.push ['Containers', info['Containers']]
                 rows.push ['Debug', info['Debug']]
@@ -130,7 +132,8 @@ module Ruboty
             def docker_inspect(message)
                 images = ::Docker::Image.get(message[:image_name])
                 info   = images.instance_variable_get(:@info)
-                rows   = []
+                message.reply(info, code: true) if message[:debug] == ' -D '
+                rows = []
                 rows.push ['ID', images.instance_variable_get(:@id)]
                 rows.push ['Architecture', info['Architecture']]
                 rows.push ['Author', info['Author']]
@@ -166,6 +169,7 @@ module Ruboty
             def docker_ps(message)
                 containers = ::Docker::Container
                 rows       = []
+                message.reply(containers.all(:all => true), code: true) if message[:debug] == ' -D '
                 containers.all(:all => true).each do |c|
                     command = [c.instance_variable_get(:@info)['Command']].to_s[2..16]
                     created = [c.instance_variable_get(:@info)['Created']].to_s[2..-3]
@@ -193,6 +197,7 @@ module Ruboty
                 message.reply("Pulling from #{image_name}...")
                 image = ::Docker::Image.create('fromImage' => image_name)
                 message.reply("Status: Downloaded newer image for #{image_name}")
+                message.reply(image.json, code: true) if message[:debug] == ' -D '
                 rows = []
                 rows.push ['IMAGE NAME', image_name]
                 rows.push ['IMAGE ID', image.json['Id']]
@@ -230,6 +235,7 @@ module Ruboty
                 image_name = message[:image_name]
                 message.reply("Deleting from #{image_name}...")
                 image = ::Docker::Image.get(image_name).remove(force: true)
+                message.reply(image, code: true) if message[:debug] == ' -D '
                 message.reply image
             rescue => e
                 value = [e.class.name, e.message, e.backtrace].join("\n")
