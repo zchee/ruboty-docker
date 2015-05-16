@@ -149,7 +149,6 @@ module Ruboty
                         rows.push ['', info['Config']['OnBuild'][n]]
                     end
                 end
-                rows.push ['On Build', info['Config']['OnBuild']]
                 rows.push ['Port Specs', info['Config']['PortSpecs']]
                 rows.push ['User', info['Config']['User']]
                 rows.push ['Volumes', info['Config']['Volumes']]
@@ -164,7 +163,7 @@ module Ruboty
             ensure
             end
 
-ga             def docker_ps(message)
+            def docker_ps(message)
                 containers = ::Docker::Container
                 rows       = []
                 containers.all(:all => true).each do |c|
