@@ -129,17 +129,25 @@ module Ruboty
 
             def docker_inspect(message)
                 images = ::Docker::Image.get(message[:image_name])
-                info = images.instance_variable_get(:@info)
+                info   = images.instance_variable_get(:@info)
                 rows   = []
                 rows.push ['ID', images.instance_variable_get(:@id)]
                 rows.push ['Architecture', info['Architecture']]
                 rows.push ['Author', info['Author']]
                 rows.push ['Command', info['Config']['Cmd']]
                 info['Config']['Env'].each_index do |n|
-                    rows.push ['Env', info['Config']['Env'][n]]
+                    if n == 0
+                        rows.push ['Env', info['Config']['Env'][n]]
+                    else
+                        rows.push ['', info['Config']['Env'][n]]
+                    end
                 end
                 info['Config']['OnBuild'].each_index do |n|
-                    rows.push ['OnBuild', info['Config']['OnBuild'][n]]
+                    if n == 0
+                        rows.push ['OnBuild', info['Config']['OnBuild'][n]]
+                    else
+                        rows.push ['', info['Config']['OnBuild'][n]]
+                    end
                 end
                 rows.push ['On Build', info['Config']['OnBuild']]
                 rows.push ['Port Specs', info['Config']['PortSpecs']]
@@ -150,14 +158,13 @@ module Ruboty
                 table       = ::Terminal::Table.new title: 'DOCKER INSPECT', rows: rows
                 table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
                 message.reply(table, code: true)
-
             rescue => e
                 value = [e.class.name, e.message].join("\n")
                 message.reply value
             ensure
             end
 
-            def docker_ps(message)
+ga             def docker_ps(message)
                 containers = ::Docker::Container
                 rows       = []
                 containers.all(:all => true).each do |c|
