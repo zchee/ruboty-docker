@@ -3,8 +3,7 @@ module Ruboty
         class Docker < Base
             NAMESPACE = 'docker'
 
-            env :DOCKER_HOST, 'Docker server ip.'
-            env :DOCKER_CERT_PATH, 'Docker server cert path.'
+            ::Docker.url = ENV['RUBOTY_DOCKER_HOST'] || 'unix:///var/run/docker.sock'
 
             on /docker build (?<code>.+)/m, name: 'docker_build', description: 'Build an image form a code'
             # on /docker commmit\z/, name: 'docker_commit', description: "Create a nev image from a container's changes"
