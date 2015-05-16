@@ -198,7 +198,20 @@ module Ruboty
                 rows.push ['IMAGE ID', image.json['Id']]
                 rows.push ['VirtualSize', filesize_to_human(image.json['VirtualSize'])]
                 rows.push ['OS', image.json['Os']]
-                rows.push ['OnBuild', image.json['Config']['OnBuild']]
+                image.json['Config']['Env'].each_index do |n|
+                    if n == 0
+                        rows.push ['Env', image.json['Config']['Env'][n]]
+                    else
+                        rows.push ['', image.json['Config']['Env'][n]]
+                    end
+                end
+                image.json['Config']['OnBuild'].each_index do |n|
+                    if n == 0
+                        rows.push ['OnBuild', image.json['Config']['OnBuild'][n]]
+                    else
+                        rows.push ['', image.json['Config']['OnBuild'][n]]
+                    end
+                end
                 rows.push ['Cmd', image.json['ContainerConfig']['Cmd']]
                 rows.push ['WorkingDir', image.json['ContainerConfig']['WorkingDir']]
                 rows.push ['Created', image.json['Created']]
