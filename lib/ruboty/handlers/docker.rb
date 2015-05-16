@@ -129,17 +129,23 @@ module Ruboty
 
             def docker_inspect(message)
                 images = ::Docker::Image.get(message[:image_name])
+                info = images.instance_variable_get(:@info)
                 rows   = []
                 rows.push ['ID', images.instance_variable_get(:@id)]
-                rows.push ['Architecture', images.instance_variable_get(:@info)['Architecture']]
-                rows.push ['Author', images.instance_variable_get(:@info)['Author']]
-                rows.push ['Command', images.instance_variable_get(:@info)['Config']['Cmd']]
-                rows.push ['Env', images.instance_variable_get(:@info)['Config']['Env']]
-                rows.push ['On Build', images.instance_variable_get(:@info)['Config']['OnBuild']]
-                rows.push ['Port Specs', images.instance_variable_get(:@info)['Config']['PortSpecs']]
-                rows.push ['User', images.instance_variable_get(:@info)['Config']['User']]
-                rows.push ['Volumes', images.instance_variable_get(:@info)['Config']['Volumes']]
-                rows.push ['Working Dir', images.instance_variable_get(:@info)['Config']['WorkingDir']]
+                rows.push ['Architecture', info['Architecture']]
+                rows.push ['Author', info['Author']]
+                rows.push ['Command', info['Config']['Cmd']]
+                info['Config']['Env'].each_index do |n|
+                    rows.push ['Env', info['Config']['Env'][n]]
+                end
+                info['Config']['OnBuild'].each_index do |n|
+                    rows.push ['OnBuild', info['Config']['OnBuild'][n]]
+                end
+                rows.push ['On Build', info['Config']['OnBuild']]
+                rows.push ['Port Specs', info['Config']['PortSpecs']]
+                rows.push ['User', info['Config']['User']]
+                rows.push ['Volumes', info['Config']['Volumes']]
+                rows.push ['Working Dir', info['Config']['WorkingDir']]
 
                 table       = ::Terminal::Table.new title: 'DOCKER INSPECT', rows: rows
                 table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
