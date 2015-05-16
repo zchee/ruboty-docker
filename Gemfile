@@ -10,10 +10,11 @@ gem 'ruboty-alias'
 # gem 'ruboty-bundler'
 gem 'ruboty-cron'
 gem 'ruboty-echo'
-gem 'ruboty-github'
+# gem 'ruboty-github'
 gem 'ruboty-redis'
 gem 'ruboty-replace'
 gem 'ruboty-ruby'
+gem 'ruboty-rss'
 
 gem 'docker-api', :require => 'docker'
 gem 'slack-api'
@@ -23,3 +24,5 @@ gem 'terminal-table'
 gem 'coderay'
 
 gem 'awesome_print'
+
+gem 'guard'
