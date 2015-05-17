@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
     spec.add_runtime_dependency 'ruboty'
     spec.add_runtime_dependency 'docker-api'
     spec.add_runtime_dependency 'terminal-table'
-    spec.add_runtime_dependency 'eventmachine'
     spec.add_runtime_dependency 'awesome_print'
+    spec.add_runtime_dependency 'pry'
     spec.add_development_dependency 'bundler', '~> 1.9'
     spec.add_development_dependency 'rake', '~> 10.0'
 end
