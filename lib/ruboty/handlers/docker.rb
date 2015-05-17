@@ -45,27 +45,6 @@ module Ruboty
             # on /docker version\z/, name: 'docker_version', description: 'Show the Docker version information'
             # on /docker wait\z/, name: 'docker_wait', description: 'Block until a container stops, then print its exit code'
 
-            def docker_events_start(message)
-                @stream = Thread.new { ::Docker::Event.stream do |event|
-                    response = ['docker event response', event.status, event.id, event.from, event.time].join(' ')
-                    message.reply response
-                end }
-                message.reply('Start Docker events stream server')
-            rescue => e
-                value = [e.class.name, e.message, e.backtrace].join("\n")
-                message.reply value
-            ensure
-            end
-
-            def docker_events_stop(message)
-                Thread.kill(@stream)
-                message.reply('Stop Docker events stream server')
-            rescue => e
-                value = [e.class.name, e.message, e.backtrace].join("\n")
-                message.reply value
-            ensure
-            end
-
             def docker_build(message)
                 message_args = message[:code].to_s.split("\n", 2)
                 repo_name    = message_args[0].split(':')[0]
