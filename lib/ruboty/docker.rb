@@ -1,6 +1,6 @@
 require 'awesome_print'
-require 'pp'
 require 'docker'
+require 'pp'
 require 'terminal-table'
 
 require 'ruboty/docker/version'
