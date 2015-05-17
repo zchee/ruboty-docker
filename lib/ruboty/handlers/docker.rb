@@ -33,7 +33,7 @@ module Ruboty
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
-            on /docker run(?<debug>.+?)(?<image_name>.+) (?<commnand>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker run(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
             # on /docker start\z/, name: 'docker_start', description: 'Start a stopped container'
