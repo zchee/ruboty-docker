@@ -33,7 +33,7 @@ module Ruboty
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
-            on /docker run(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker run (?<image_name>.+) -v (?<volume>.+) -e (?<env>.+)/, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
             # on /docker start\z/, name: 'docker_start', description: 'Start a stopped container'
@@ -213,7 +213,7 @@ module Ruboty
                 table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
                 message.reply(table, code: true)
             rescue => e
-                value = ["'pull' requires 1 argument. See @#{ENV['RUBOTY_NAME']} help", e.class.name, e.message, e.backtrace].join("\n")
+                value = [e.class.name, e.message, e.backtrace].join("\n")
                 message.reply value
             ensure
             end
@@ -256,7 +256,7 @@ module Ruboty
                 table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
                 message.reply(table, code: true)
             rescue => e
-                value = ["'pull' requires 1 argument. See @#{ENV['RUBOTY_NAME']} help", e.class.name, e.message, e.backtrace].join("\n")
+                value = [e.class.name, e.message, e.backtrace].join("\n")
                 message.reply value
             ensure
             end
@@ -275,14 +275,16 @@ module Ruboty
 
             def docker_run(message)
                 image_name = message[:image_name]
+                volume     = [] << message[:volume]
+                env = message[:env].gsub(/ \"/){$1}.gsub(/\",/, '\1, '){$1}.gsub(/\"/){$1}.split(', ')
                 message.reply("Start running the #{image_name}...")
-                image = ::Docker::Container.create('Image' => image_name)
-                image.tap(&:start).attach do |stream, chunk|
+                image = ::Docker::Container.create('Image' => image_name, 'Binds' => volume, 'Env' => env)
+                Thread.new { image.tap(&:start).attach do |stream, chunk|
                     message.reply stream
                     message.reply chunk
-                end
+                end }
             rescue => e
-                value = [e.class.name, e.message, e.backtrace].join("\n")
+                value = [e.class.name, e.message].join("\n")
                 message.reply value
             ensure
             end
@@ -297,7 +299,6 @@ module Ruboty
                 end
                 format('%.2f', n) + %w(B KB MB GB TB)[count]
             end
-
         end
     end
 end
