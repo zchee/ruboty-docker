@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
     spec.authors = ['zhee']
     spec.email   = ['zcheeee@gmail.com']
 
-    spec.summary     = %q{TODO: Write a short summary, because Rubygems requires one.}
-    spec.description = %q{TODO: Write a longer description or delete this line.}
+    spec.summary     = %q{summary}
+    spec.description = %q{desc}
     spec.homepage    = 'https://github.com/zchee/ruboty-docker'
     spec.license     = 'MIT'
 
@@ -27,11 +27,11 @@ Gem::Specification.new do |spec|
     spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
     spec.require_paths = ['lib']
 
-    spec.add_runtime_dependency 'ruboty'
-    spec.add_runtime_dependency 'docker-api'
-    spec.add_runtime_dependency 'terminal-table'
-    spec.add_runtime_dependency 'awesome_print'
-    spec.add_runtime_dependency 'pry'
+    spec.add_runtime_dependency 'ruboty', '~> 1.2'
+    spec.add_runtime_dependency 'docker-api', '~> 1.21'
+    spec.add_runtime_dependency 'terminal-table', '~> 1.4'
+    spec.add_runtime_dependency 'awesome_print', '~> 1.6'
+    spec.add_runtime_dependency 'pry', '~> 0.10'
     spec.add_development_dependency 'bundler', '~> 1.9'
     spec.add_development_dependency 'rake', '~> 10.0'
 end
