@@ -4,9 +4,6 @@ module Ruboty
             NAMESPACE = 'docker'
 
             ::Docker.url = ENV['RUBOTY_DOCKER_HOST'] || 'unix:///var/run/docker.sock'
-            if ENV['RUBOTY_DOCKER_STREAM'] === true
-                docker_event
-            end
 
             on /docker build (?<code>.+)/m, name: 'docker_build', description: 'Build an image form a code'
             # on /docker commmit\z/, name: 'docker_commit', description: "Create a nev image from a container's changes"
@@ -26,7 +23,7 @@ module Ruboty
             # on /docker load\z/, name: 'docker_load', description: 'Load an image from a tar archive'
             # on /docker login (?<username>.+) (?<password>.+) (?<email>.+)/, name: 'docker_login', description: 'Register or Login to Docker reginstry server'
             # on /docker logout\z/, name: 'docker_logout', description: 'Log out from a Docker rugistry server'
-            # on /docker logs\z/, name: 'docker_logs', description: 'Fetch the logs of a container'
+            # on /docker logs (?<container_name>.+)/, name: 'docker_logs', description: 'Fetch the logs of a container'
             # on /docker port\z/, name: 'docker_port', description: 'Lookup the pubilc-facing port that is NAT-ed to PRIVATE_PORT'
             # on /docker pause\z/, name: 'docker_pause', description: 'Pause all processes whthin a container'
             on /docker(?<debug>.+?)ps\z/m, name: 'docker_ps', description: 'List containers'
@@ -36,7 +33,7 @@ module Ruboty
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
-            # on /docker run(?<debug>.+?)(?<image_name>.+) (?<commnand>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker run(?<debug>.+?)(?<image_name>.+) (?<commnand>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
             # on /docker start\z/, name: 'docker_start', description: 'Start a stopped container'
@@ -47,7 +44,6 @@ module Ruboty
             # on /docker unpause\z/, name: 'docker_unpause', description: 'Unpause as paused container'
             # on /docker version\z/, name: 'docker_version', description: 'Show the Docker version information'
             # on /docker wait\z/, name: 'docker_wait', description: 'Block until a container stops, then print its exit code'
-
 
             def docker_events_start(message)
                 @stream = Thread.new { ::Docker::Event.stream do |event|
@@ -94,14 +90,14 @@ module Ruboty
                 rows   = []
                 message.reply images if message[:debug] == ' -D '
                 images.each do |image|
-                    repository = image.info['RepoTags'].to_s.split(':')[0]
-                    tag        = image.info['RepoTags'].to_s.split(':')[1]
+                    repository = image.info['RepoTags'].to_s.split(':').first
+                    tag        = image.info['RepoTags'].to_s.split(':').last
                     id         = image.info['id'].to_s.scan(/.{1,#{12}}/)
                     size       = filesize_to_human(image.info['VirtualSize'])
                     rows.push [repository[2..100], tag[0..-3], id[0], size]
                 end
                 table       = ::Terminal::Table.new headings: ['REPOSITORY', 'TAG', 'IMAGE ID', 'VIRTUAL SIZE'], rows: rows
-                table.style = { :padding_left => 0, :border_x => ' ', :border_y => ' ', :border_i => ' ' }
+                table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
                 message.reply(table, code: true)
             rescue => e
                 value = [e.class.name, e.message, e.backtrace].join("\n")
@@ -271,6 +267,20 @@ module Ruboty
                 image = ::Docker::Image.get(image_name).remove(force: true)
                 message.reply(image, code: true) if message[:debug] == ' -D '
                 message.reply image
+            rescue => e
+                value = [e.class.name, e.message, e.backtrace].join("\n")
+                message.reply value
+            ensure
+            end
+
+            def docker_run(message)
+                image_name = message[:image_name]
+                message.reply("Start running the #{image_name}...")
+                image = ::Docker::Container.create('Image' => image_name)
+                image.tap(&:start).attach do |stream, chunk|
+                    message.reply stream
+                    message.reply chunk
+                end
             rescue => e
                 value = [e.class.name, e.message, e.backtrace].join("\n")
                 message.reply value
