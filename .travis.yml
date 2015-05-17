@@ -1,0 +1,12 @@
+language: ruby
+rvm:
+- 2.2.2
+sudo: false
+notifications:
+  email: false
+  slack:
+    secure: XsHJia8JIg9hDoCf/kj4dXqn4KA+Uu/fwIexjR9hC0yHRWRcTrXE8jKFAvp9AWXDnoeCHMUryEj25b8O5jgtZO7+/nASoP2q+Ejlp6/Symgd3g8rHTWA4K6+pQg0vB0sqsHtglweZWj4wQGx6ybV+OHcXogo7wTy4slgt4gWTTI=
+addons:
+  code_climate:
+    repo_token:
+      secure: MQ9tK0Lt8r/mcF4NU3qhxUuBndO/zyFGVTlbDkMpCHzW+AtHocQgiQc9HplY7GA4byUzUEIAASQpnDZS9vb2SvZL4yMGQvIvReLepiCtDd/cUGxuqT5NySNj2sIcNBdmzdwJT/JYvcm2mPtWiygvxi/6mTGUlj10u8yfRJRff38=
