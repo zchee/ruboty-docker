@@ -33,7 +33,7 @@ module Ruboty
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
-            on /docker run (?<image_name>.+) -v (?<volume>.+) -e (?<env>.+)/, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker run (?<image_name>.+?) \[(?<args>.+?)\] (?<command>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
             # on /docker start\z/, name: 'docker_start', description: 'Start a stopped container'
@@ -275,10 +275,24 @@ module Ruboty
 
             def docker_run(message)
                 image_name = message[:image_name]
-                volume     = [] << message[:volume]
-                env = message[:env].gsub(/ \"/){$1}.gsub(/\",/, '\1, '){$1}.gsub(/\"/){$1}.split(', ')
+
+                # args = message[:args].gsub(/ /){$1}.split(/-[v,e,-link,-net]/)
+                args       = message[:args].gsub(/\"/) { $1 }.split('-')
+                args.each do |a|
+                    if /^v/ === a
+                        set_volumes(a)
+                    elsif /^e/ === a
+                        set_env(a)
+                    elsif /^link/ === a
+                        set_link(a)
+                    elsif /^net/ === a
+                        set_net(a)
+                    else
+                        set_command(a)
+                    end
+                end
                 message.reply("Start running the #{image_name}...")
-                image = ::Docker::Container.create('Image' => image_name, 'Binds' => volume, 'Env' => env)
+                image = ::Docker::Container.create('Image' => image_name, 'Binds' => @volume, 'Env' => @env, 'Cmd' => @command)
                 Thread.new { image.tap(&:start).attach do |stream, chunk|
                     message.reply stream
                     message.reply chunk
@@ -298,6 +312,26 @@ module Ruboty
                     count += 1
                 end
                 format('%.2f', n) + %w(B KB MB GB TB)[count]
+            end
+
+            def set_volumes(a)
+                @volume = [] << a.sub('v') { $1 }.gsub(' ') { $1 }
+            end
+
+            def set_env(a)
+                @env = a.chop.sub(/e /) { $1 }.split(', ')
+            end
+
+            def set_link(a)
+                @link = [] << a.sub(/link /) { $1 }.gsub(/\s/) { $1 }
+            end
+
+            def set_net(a)
+                @net = [] << a.sub(/net /) { $1 }
+            end
+
+            def set_command(a)
+                @command = a.split('/\s/')
             end
         end
     end
