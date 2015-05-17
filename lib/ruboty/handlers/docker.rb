@@ -91,8 +91,8 @@ module Ruboty
 
             def docker_images(message)
                 images = ::Docker::Image.all
-                message.reply(images, code: true) if message[:debug] == ' -D '
-                rows = []
+                rows   = []
+                message.reply images if message[:debug] == ' -D '
                 images.each do |image|
                     repository = image.info['RepoTags'].to_s.split(':')[0]
                     tag        = image.info['RepoTags'].to_s.split(':')[1]
@@ -164,18 +164,22 @@ module Ruboty
                 rows.push ['Architecture', info['Architecture']]
                 rows.push ['Author', info['Author']]
                 rows.push ['Command', info['Config']['Cmd']]
-                info['Config']['Env'].each_index do |n|
-                    if n == 0
-                        rows.push ['Env', info['Config']['Env'][n]]
-                    else
-                        rows.push ['', info['Config']['Env'][n]]
+                unless info['Config']['Env'].blank?
+                    info['Config']['Env'].each_index do |n|
+                        if n == 0
+                            rows.push ['Env', info['Config']['Env'][n]]
+                        else
+                            rows.push ['', info['Config']['Env'][n]]
+                        end
                     end
                 end
-                info['Config']['OnBuild'].each_index do |n|
-                    if n == 0
-                        rows.push ['OnBuild', info['Config']['OnBuild'][n]]
-                    else
-                        rows.push ['', info['Config']['OnBuild'][n]]
+                unless info['Config']['OnBuild'].blank?
+                    info['Config']['OnBuild'].each_index do |n|
+                        if n == 0
+                            rows.push ['OnBuild', info['Config']['OnBuild'][n]]
+                        else
+                            rows.push ['', info['Config']['OnBuild'][n]]
+                        end
                     end
                 end
                 rows.push ['Port Specs', info['Config']['PortSpecs']]
@@ -229,18 +233,22 @@ module Ruboty
                 rows.push ['IMAGE ID', image.json['Id']]
                 rows.push ['VirtualSize', filesize_to_human(image.json['VirtualSize'])]
                 rows.push ['OS', image.json['Os']]
-                image.json['Config']['Env'].each_index do |n|
-                    if n == 0
-                        rows.push ['Env', image.json['Config']['Env'][n]]
-                    else
-                        rows.push ['', image.json['Config']['Env'][n]]
+                unless image.json['Config']['Env'].blank?
+                    image.json['Config']['Env'].each_index do |n|
+                        if n == 0
+                            rows.push ['Env', image.json['Config']['Env'][n]]
+                        else
+                            rows.push ['', image.json['Config']['Env'][n]]
+                        end
                     end
                 end
-                image.json['Config']['OnBuild'].each_index do |n|
-                    if n == 0
-                        rows.push ['OnBuild', image.json['Config']['OnBuild'][n]]
-                    else
-                        rows.push ['', image.json['Config']['OnBuild'][n]]
+                unless image.json['Config']['Env'].blank?
+                    image.json['Config']['OnBuild'].each_index do |n|
+                        if n == 0
+                            rows.push ['OnBuild', image.json['Config']['OnBuild'][n]]
+                        else
+                            rows.push ['', image.json['Config']['OnBuild'][n]]
+                        end
                     end
                 end
                 rows.push ['Cmd', image.json['ContainerConfig']['Cmd']]
@@ -279,6 +287,7 @@ module Ruboty
                 end
                 format('%.2f', n) + %w(B KB MB GB TB)[count]
             end
+
         end
     end
 end
