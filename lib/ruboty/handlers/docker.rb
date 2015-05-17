@@ -291,9 +291,9 @@ module Ruboty
                         set_command(a)
                     end
                 end
-                message.reply("Start running the #{image_name}...")
                 image = ::Docker::Container.create('Image' => image_name, 'Binds' => @volume, 'Env' => @env, 'Cmd' => @command)
                 Thread.new { image.tap(&:start).attach do |stream, chunk|
+                    message.reply("Start running the #{image_name}...")
                     message.reply stream
                     message.reply chunk
                 end }
