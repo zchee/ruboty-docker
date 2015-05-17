@@ -4,13 +4,17 @@ module Ruboty
             NAMESPACE = 'docker'
 
             ::Docker.url = ENV['RUBOTY_DOCKER_HOST'] || 'unix:///var/run/docker.sock'
+            if ENV['RUBOTY_DOCKER_STREAM'] === true
+                docker_event
+            end
 
             on /docker build (?<code>.+)/m, name: 'docker_build', description: 'Build an image form a code'
             # on /docker commmit\z/, name: 'docker_commit', description: "Create a nev image from a container's changes"
             # on /docker cp\z/, name: 'docker_cp', description: "Copy files/folders from a container's filesystem to the host path"
             # on /docker create\z/, name: 'docker_create', description: 'Create a new container'
             # on /docker diff\z/, name: 'docker_diff', description: "Inspect changes on a container's filesystem"
-            # on /docker events\z/, name: 'docker_events', description: 'Get real timme events from the server'
+            on /docker events start\z/, name: 'docker_events_start', description: 'Start real time events stream server'
+            on /docker events stop\z/, name: 'docker_events_stop', description: 'Stop real time events stream server'
             # on /docker exec\z/, name: 'docer_exec', description: 'Run a command in a running container'
             # on /docker export\z/, name: 'docker_export', description: 'Stream the contents of a container sa a tar archive'
             # on /docker history\z/, name: 'docker_history', description: 'Show the history of an image'
@@ -32,7 +36,7 @@ module Ruboty
             # on /docker restart\z/, name: 'docker_restart', description: 'Restart a running container'
             # on /docker rm \z/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
-            # on /docker run\z/, name: 'docker_run', description: 'Run a command in a nemw container'
+            # on /docker run(?<debug>.+?)(?<image_name>.+) (?<commnand>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
             # on /docker save\z/, name: 'docker_save', description: 'Save an imaeg to a tar archive'
             # on /docker search\z/, name: 'docker_search', description: 'Search ofr an image on the Docker Hub'
             # on /docker start\z/, name: 'docker_start', description: 'Start a stopped container'
@@ -44,11 +48,22 @@ module Ruboty
             # on /docker version\z/, name: 'docker_version', description: 'Show the Docker version information'
             # on /docker wait\z/, name: 'docker_wait', description: 'Block until a container stops, then print its exit code'
 
-            on /docker event\z/, name: 'docker_event', description: 'event'
 
-            def docker_event(message)
-                Thread.new { ::Docker::Event.stream { |event| message.reply event } }
-                message.reply('stream start')
+            def docker_events_start(message)
+                @stream = Thread.new { ::Docker::Event.stream do |event|
+                    response = ['docker event response', event.status, event.id, event.from, event.time].join(' ')
+                    message.reply response
+                end }
+                message.reply('Start Docker events stream server')
+            rescue => e
+                value = [e.class.name, e.message, e.backtrace].join("\n")
+                message.reply value
+            ensure
+            end
+
+            def docker_events_stop(message)
+                Thread.kill(@stream)
+                message.reply('Stop Docker events stream server')
             rescue => e
                 value = [e.class.name, e.message, e.backtrace].join("\n")
                 message.reply value
