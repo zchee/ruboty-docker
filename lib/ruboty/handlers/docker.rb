@@ -42,7 +42,7 @@ module Ruboty
             end
 
             def docker_ps(message)
-                Ruboty::Docker::Actions::PsAll.new(message).call
+                Ruboty::Docker::Actions::Ps.new(message).call
             end
 
             def docker_pull(message)
