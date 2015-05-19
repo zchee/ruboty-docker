@@ -5,7 +5,7 @@ module Ruboty
                 def call
                     container = message[:container_name]
 
-                    @rm_thread = Thread.new { ::Docker::Container.get(container).remove
+                    @rm_thread = ::Thread.new { ::Docker::Container.get(container).remove
                     message.reply("Delete #{container}")
                     }
                 rescue => e

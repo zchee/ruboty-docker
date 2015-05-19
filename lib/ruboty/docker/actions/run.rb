@@ -21,13 +21,12 @@ module Ruboty
                     end
                     image = ::Docker::Container.create('Image' => image_name, 'Binds' => @volume, 'Env' => @env, 'Cmd' => @command)
                     message.reply("Start running the #{image_name}...")
-                    Thread.new { image.tap(&:start).attach do |stream, chunk|
+                    ::Thread.new { image.tap(&:start).attach do |stream, chunk|
                         message.reply stream
                         message.reply chunk
                     end }
-                    message.reply("Started running the #{image_name}...")
                 rescue => e
-                    value = [e.class.name, e.message].join("\n")
+                    value = [e.class.name, e.message, e.backtrace].join("\n")
                     message.reply value
                 ensure
                 end
