@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Build < Ruboty::Actions::Base
+            class Build < Base
                 def call
                     message_args = message[:code].to_s.split("\n", 2)
                     repo_name    = message_args[0].split(':')[0]

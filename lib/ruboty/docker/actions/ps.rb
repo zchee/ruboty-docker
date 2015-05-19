@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class PsAll < Ruboty::Actions::Base
+            class PsAll < Base
                 def call
                     containers = ::Docker::Container
                     rows       = []

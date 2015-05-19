@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Rm < Ruboty::Actions::Base
+            class Rm < Base
                 def call
                     message.reply('test')
                 end

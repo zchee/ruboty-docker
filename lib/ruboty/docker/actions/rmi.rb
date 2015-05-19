@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Rmi < Ruboty::Actions::Base
+            class Rmi < Base
                 def call
                     image_name = message[:image_name]
                     message.reply("Deleting from #{image_name}...")

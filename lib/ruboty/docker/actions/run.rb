@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Run < Ruboty::Actions::Base
+            class Run < Base
                 def call
                     image_name = message[:image_name]
 

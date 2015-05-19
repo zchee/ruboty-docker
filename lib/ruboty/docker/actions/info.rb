@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Info < Ruboty::Actions::Base
+            class Info < Base
                 def call
                     info = ::Docker.info
                     message.reply(info, code: true) if message[:debug] == ' -D '

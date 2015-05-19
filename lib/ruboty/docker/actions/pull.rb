@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Pull < Ruboty::Actions::Base
+            class Pull < Base
                 def call
                     image_name = message[:image_name]
                     message.reply("Pulling from #{image_name}...")
@@ -13,7 +13,7 @@ module Ruboty
                     rows.push ['IMAGE ID', image.json['Id']]
                     rows.push ['VirtualSize', filesize_to_human(image.json['VirtualSize'])]
                     rows.push ['OS', image.json['Os']]
-                    unless image.json['Config']['Env'].blank?
+                    unless image.json['Config']['Env'].nil?
                         image.json['Config']['Env'].each_index do |n|
                             if n == 0
                                 rows.push ['Env', image.json['Config']['Env'][n]]
@@ -22,7 +22,7 @@ module Ruboty
                             end
                         end
                     end
-                    unless image.json['Config']['Env'].blank?
+                    unless image.json['Config']['OnBuild'].nil?
                         image.json['Config']['OnBuild'].each_index do |n|
                             if n == 0
                                 rows.push ['OnBuild', image.json['Config']['OnBuild'][n]]

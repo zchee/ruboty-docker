@@ -2,7 +2,7 @@ module Ruboty
     module Docker
         module Actions
             module Events
-                class Start < Ruboty::Actions::Base
+                class Start < Base
                     def call
                         @stream = Thread.new { ::Docker::Event.stream do |event|
                             response = ['docker event response', event.status, event.id, event.from, event.time].join("\s")
@@ -16,7 +16,7 @@ module Ruboty
                     end
                 end
 
-                class Stop < Ruboty::Actions::Base
+                class Stop < Base
                     def call
                         Thread.kill(@stream)
                         message.reply('Stop Docker events stream server')

@@ -1,7 +1,7 @@
 module Ruboty
     module Docker
         module Actions
-            class Inspect < Ruboty::Actions::Base
+            class Inspect < Base
                 def call
                     images = ::Docker::Image.get(message[:image_name])
                     info   = images.instance_variable_get(:@info)
