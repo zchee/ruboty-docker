@@ -15,6 +15,7 @@ module Ruboty
             on /docker rm (?<container_name>.+)/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
             on /docker run (?<image_name>.+?) \[(?<args>.+?)\] (?<command>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker stop (?<container_name>.+)/, name: 'docker_stop', description: 'Stop a running container'
             on /docker thread\z/, name: 'docker_thread', description: 'Check current Ruby thread'
 
             def docker_events(message)
@@ -55,6 +56,10 @@ module Ruboty
 
             def docker_run(message)
                 Ruboty::Docker::Actions::Run.new(message).call
+            end
+
+            def docker_stop(message)
+                Ruboty::Docker::Actions::Stop.new(message).call
             end
 
             def docker_thread(message)
