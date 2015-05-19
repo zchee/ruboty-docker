@@ -9,7 +9,7 @@ module Ruboty
             on /docker events\z/, name: 'docker_events', description: 'Start real time events stream watch thread'
             on /docker(?<debug>.+?)images\z/m, name: 'docker_images', description: 'List images'
             on /docker(?<debug>.+?)info\z/m, name: 'docker_info', description: 'Display system-vide information'
-            on /docker(?<debug>.+?)inspect (?<image_name>.+)/m, name: 'docker_inspect', description: 'Return low-level information on a contaitner or image'
+            on /docker(?<debug>.+?)inspect (?<target_name>.+)/m, name: 'docker_inspect', description: 'Return low-level information on a contaitner or image'
             on /docker(?<debug>.+?)ps\z/m, name: 'docker_ps', description: 'List containers'
             on /docker(?<debug>.+?)pull (?<image_name>.+)/m, name: 'docker_pull', description: 'Pull an image or a repository from a Docker registry server'
             on /docker rm (?<container_name>.+)/, name: 'docker_rm', description: 'Remove one or more containers'

@@ -3,7 +3,7 @@ module Ruboty
         module Actions
             class Inspect < Base
                 def call
-                    images = ::Docker::Image.get(message[:image_name])
+                    images = ::Docker::Image.get(message[:target_name])
                     info   = images.instance_variable_get(:@info)
                     message.reply(info, code: true) if message[:debug] == ' -D '
                     rows = []
@@ -11,7 +11,7 @@ module Ruboty
                     rows.push ['Architecture', info['Architecture']]
                     rows.push ['Author', info['Author']]
                     rows.push ['Command', info['Config']['Cmd']]
-                    unless info['Config']['Env'].blank?
+                    unless info['Config']['Env'].nil?
                         info['Config']['Env'].each_index do |n|
                             if n == 0
                                 rows.push ['Env', info['Config']['Env'][n]]
@@ -20,7 +20,7 @@ module Ruboty
                             end
                         end
                     end
-                    unless info['Config']['OnBuild'].blank?
+                    unless info['Config']['OnBuild'].nil?
                         info['Config']['OnBuild'].each_index do |n|
                             if n == 0
                                 rows.push ['OnBuild', info['Config']['OnBuild'][n]]
