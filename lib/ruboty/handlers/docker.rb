@@ -18,6 +18,7 @@ module Ruboty
             on /docker start (?<container_name>.+)/, name: 'docker_start', description: 'Start a stopped container'
             on /docker stop (?<container_name>.+)/, name: 'docker_stop', description: 'Stop a running container'
             on /docker thread\z/, name: 'docker_thread', description: 'Check current Ruby thread'
+            on /docker top (?<container_name>.+)/, name: 'docker_top', description: 'Stop a running container'
 
             def docker_events(message)
                 Ruboty::Docker::Actions::Events.new(message).call
@@ -69,6 +70,10 @@ module Ruboty
 
             def docker_thread(message)
                 Ruboty::Docker::Actions::Thread.new(message).call
+            end
+
+            def docker_top(message)
+                Ruboty::Docker::Actions::Top.new(message).call
             end
         end
     end
