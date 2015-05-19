@@ -6,27 +6,23 @@ module Ruboty
             ::Docker.url = ENV['RUBOTY_DOCKER_HOST'] || 'unix:///var/run/docker.sock'
 
             on /docker build (?<code>.+)/m, name: 'docker_build', description: 'Build an image form a code'
-            on /docker events start\z/, name: 'docker_events_start', description: 'Start real time events stream server'
-            on /docker events stop\z/, name: 'docker_events_stop', description: 'Stop real time events stream server'
+            on /docker events\z/, name: 'docker_events', description: 'Start real time events stream watch thread'
             on /docker(?<debug>.+?)images\z/m, name: 'docker_images', description: 'List images'
             on /docker(?<debug>.+?)info\z/m, name: 'docker_info', description: 'Display system-vide information'
             on /docker(?<debug>.+?)inspect (?<image_name>.+)/m, name: 'docker_inspect', description: 'Return low-level information on a contaitner or image'
             on /docker(?<debug>.+?)ps\z/m, name: 'docker_ps', description: 'List containers'
             on /docker(?<debug>.+?)pull (?<image_name>.+)/m, name: 'docker_pull', description: 'Pull an image or a repository from a Docker registry server'
-            on /docker rm\z/, name: 'docker_rm', description: 'Remove one or more containers'
+            on /docker rm (?<container_name>.+)/, name: 'docker_rm', description: 'Remove one or more containers'
             on /docker rmi(?<debug>.+?)(?<image_name>.+)/m, name: 'docker_rmi', description: 'Remove one or more images'
             on /docker run (?<image_name>.+?) \[(?<args>.+?)\] (?<command>.+)/m, name: 'docker_run', description: 'Run a command in a nemw container'
+            on /docker thread\z/, name: 'docker_thread', description: 'Check current Ruby thread'
 
-            def docker_events_start(message)
-                Ruboty::Docker::Actions::Events::Start.new(message).call
-            end
-
-            def docker_events_stop(message)
-                Ruboty::Docker::Actions::Events::Stop.new(message).call
+            def docker_events(message)
+                Ruboty::Docker::Actions::Events.new(message).call
             end
 
             def docker_build(message)
-                Ruboty::Docker::Actions::Events::Build.new(message).call
+                Ruboty::Docker::Actions::Build.new(message).call
             end
 
             def docker_images(message)
@@ -59,6 +55,10 @@ module Ruboty
 
             def docker_run(message)
                 Ruboty::Docker::Actions::Run.new(message).call
+            end
+
+            def docker_thread(message)
+                Ruboty::Docker::Actions::Thread.new(message).call
             end
         end
     end
