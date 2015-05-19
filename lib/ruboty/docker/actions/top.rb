@@ -13,7 +13,7 @@ module Ruboty
                     table.style = { :padding_left => 0, :border_x => '', :border_y => ' ', :border_i => '' }
                     message.reply(table, code: true)
                 rescue => e
-                    value = [e.class.name, e.message, e.backtrace].join("\n")
+                    value = [e.class.name, e.message].join("\n")
                     message.reply value
                 ensure
                 end
