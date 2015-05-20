@@ -5,4 +5,8 @@ gemspec
 
 gem 'codeclimate-test-reporter', group: :test, require: nil
 gem 'coveralls', require: false
-gem 'ruboty-slack'
+
+group :development, :test do
+  gem 'rspec'
+  gem 'ruboty-slack'
+end
