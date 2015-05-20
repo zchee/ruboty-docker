@@ -1,9 +1,9 @@
 language: ruby
 rvm:
-- 2.2.2
+  - 2.2.2
 sudo: false
 script:
-- bundle exec rake spec
+  - bundle exec rake spec
 notifications:
   email: false
   slack:
