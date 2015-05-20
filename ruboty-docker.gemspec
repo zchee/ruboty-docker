@@ -18,16 +18,16 @@ Gem::Specification.new do |spec|
     spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
     spec.require_paths = ['lib']
 
-    spec.add_runtime_dependency 'docker-api', '~> 1.21'
-    spec.add_runtime_dependency 'ruboty', '~> 1.2'
-    spec.add_runtime_dependency 'terminal-table', '~> 1.4'
+    spec.add_runtime_dependency 'docker-api', '>= 1.21'
+    spec.add_runtime_dependency 'ruboty', '>= 1.2'
+    spec.add_runtime_dependency 'terminal-table', '>= 1.4'
     spec.add_development_dependency 'awesome_print'
-    spec.add_development_dependency 'bundler', '~> 1.9'
+    spec.add_development_dependency 'bundler', '>= 1.9'
     spec.add_development_dependency 'ci_reporter'
     spec.add_development_dependency 'codeclimate-test-reporter'
     spec.add_development_dependency 'coveralls'
     spec.add_development_dependency 'pry'
-    spec.add_development_dependency 'rake', '~> 10.0'
+    spec.add_development_dependency 'rake', '>= 10.0'
     spec.add_development_dependency 'rspec'
     spec.add_development_dependency 'simplecov'
     spec.add_development_dependency 'simplecov-rcov'
