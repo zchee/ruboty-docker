@@ -1,4 +1,4 @@
-require '../spec_helper'
+require File.expand_path('spec/spec_helper')
 
 describe Ruboty::Docker do
   it 'has a version number' do
