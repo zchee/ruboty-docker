@@ -1,9 +1,9 @@
 language: ruby
 rvm:
-  - 2.2.2
+- 2.2.2
 sudo: false
 script:
-  - bundle exec rspec spec/
+- bundle exec rspec spec/
 notifications:
   email: false
   slack:
@@ -12,3 +12,6 @@ addons:
   code_climate:
     repo_token:
       secure: SlBG495OVoLL1+yGDpJx8GnLaOXsu8C/gxHirvpmhrqe5yZoaIaDACsNWZMqBjKa+TqC/61qlldXA6bXXfIzV6lCCQBj1EkjgETxh0X06uOwFAj6pSUOklCz+ROoEZ7wocIVxTNUWac6MD31KXLOs6tIMmvrHg0qhp2FfVO2A2ZeMCVsLY0GqOI05hbLrX59I/sNfqdELTh/jCk3JueNO1xbTfKfNj9VzkuOtKssn57mIzPjELp/nvJXPcSDDoY8pkptRRYyG/UWdb4YLlyyT5kYc6hqhR/E60csNrEW6EkJWmd49+nFND//nxryH+Aj84o9QbgzR/9Oc34aaQrXAyWXZPWmR3phPKMusaOIOkLsY9wZqjjBUvZvaVEkZrlP/qoqeuON7cYi8zKyFc774Oo8qxFFhQ1WPGbIJfFu6mHO8rAdUiSuUj/nywjZUBo/4K1Pw5wVw7ffDnqJ9SZ0/ncnZGU8wnL3yZjbOvCZVL/N7CweL1RMqYS62cuHzBZeP6qQgtwZ/8oSMjzw7wuyMeAirspWhNoVOy9N2iRD97mKlu3+2L/6upe5OwenxOfWAL9iACA9dgG/TSMq0JbtjRAbf+nNjAoHFnBSwQ/sNOEYATjLMXcr7hO3vP7a6Izgru5sYMJb7V3e8yAXRNJjBwhkUJQb1LEtdKtIUBKkHaA=
+env:
+  global:
+  - secure: lfV7Aab8IyT4MpKxcWPrB8F4EN7144vhiOOS4mSWjjJhHnCBYccCzLDhY9NxDRv+hnkSBzByX0noXspCHfBG6CAHYTO4XuyzXNUYhlhAVhGdCe7NrqK4exwEVwDroVUeY2wWxWXvWoz+IPHrRB4ZAOjFuy3tIHph56dapTI19VA5oW79BH+iXH7qJpp7khJs4UkQ56x3bw0MDagE7ETBae7hBtBF/cMbCnpts2V6etp9OGQIEtj7L7FxO6E7tS2hSUHlItJ46+btjg1kJ1ej4a4eqSfy4Y9FdhR6VlGof65GBh8kbAr5cYww2s2Hl3ZNKdkqFhU2YsE9R4TuRDIQSCr50Abql5tGqk17pe9uFVYr2GNVyVnN3IZEt+7w0PFZys7uSKkG/qQsa/tIvpcRUsd4J/kq1ZlEAO/9L7LKxY27qktJO9ssPvwIgN+ws7r5uhYxEn3qcpfSAh+R/p9RwzGcHTRZZhhZcwtuUcl5xIF/vW+TFUZcqYUW86oshEnmPqX3S0eeEo272ZGJ93pBfdUT2NpEMljr0ooVDR+LFdRagys5m4ODlYcwKkLhcpu/X5d5niNPrt+VsNZFJFMcDscsdmJB9gO8oWvKj7iqpFuR0gpfIejw9r07JQS6tTeJhUXA0n4VY6OcmBa+u/4kd86mMFmRupUTvlqURKFdydc=
