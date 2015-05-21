@@ -6,4 +6,4 @@ machine:
 
 test:
   post:
-    - bundle exec rake
+    - bundle exec rspec spec/

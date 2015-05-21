@@ -3,7 +3,7 @@ rvm:
   - 2.2.2
 sudo: false
 script:
-  - bundle exec rake spec
+  - bundle exec rspec spec/
 notifications:
   email: false
   slack:
