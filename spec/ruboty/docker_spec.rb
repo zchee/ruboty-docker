@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require '../spec_helper'
 
 describe Ruboty::Docker do
   it 'has a version number' do
