@@ -4,29 +4,35 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ruboty/docker/version'
 
 Gem::Specification.new do |spec|
-    spec.name    = 'ruboty-docker'
-    spec.version = Ruboty::Docker::VERSION
-    spec.authors = ['zchee']
-    spec.email   = ['zcheeee@gmail.com']
+  spec.name    = 'ruboty-docker'
+  spec.version = Ruboty::Docker::VERSION
+  spec.authors = ['zchee']
+  spec.email   = ['zcheeee@gmail.com']
 
-    spec.summary     = %q{Management Docker via Ruboty ChatOps}
-    spec.description = %q{Management Docker via Ruboty ChatOps}
-    spec.homepage    = 'https://github.com/zchee/ruboty-docker'
-    spec.license     = 'MIT'
+  spec.summary     = %q{Management Docker via Ruboty ChatOps}
+  spec.description = %q{Management Docker via Ruboty ChatOps}
+  spec.homepage    = 'https://github.com/zchee/ruboty-docker'
+  spec.license     = 'MIT'
 
-    spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-    spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-    spec.require_paths = ['lib']
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ['lib']
 
-    spec.add_runtime_dependency 'docker-api', '>= 1.21'
-    spec.add_runtime_dependency 'ruboty', '>= 1.2'
-    spec.add_runtime_dependency 'terminal-table', '>= 1.4'
-    spec.add_development_dependency 'bundler'
-    spec.add_development_dependency 'codeclimate-test-reporter', '>= 0.4'
-    spec.add_development_dependency 'coveralls', '>= 0.8'
-    spec.add_development_dependency 'pry'
-    spec.add_development_dependency 'rake'
-    spec.add_development_dependency 'rspec', '>= 3.2'
-    spec.add_development_dependency 'simplecov', '>= 0.10'
-    spec.add_development_dependency 'simplecov-rcov', '>= 0.2'
+  spec.add_runtime_dependency 'docker-api', '>= 1.21'
+  spec.add_runtime_dependency 'ruboty', '>= 1.2'
+  spec.add_runtime_dependency 'terminal-table', '>= 1.4'
+
+  spec.add_development_dependency 'bundler'
+  spec.add_development_dependency 'codeclimate-test-reporter'
+  spec.add_development_dependency 'coveralls'
+  spec.add_development_dependency 'pry'
+  spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
+  spec.add_development_dependency 'guard-rspec'
+  spec.add_development_dependency 'guard-bundler'
+  spec.add_development_dependency 'fuubar'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'spring-commands-rspec'
+  spec.add_development_dependency 'simplecov'
+  spec.add_development_dependency 'simplecov-rcov'
 end

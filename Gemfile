@@ -8,5 +8,7 @@ gem 'coveralls', require: false
 
 group :development, :test do
   gem 'rspec'
-  gem 'ruboty-slack'
+  # gem 'ruboty-slack'
+  # gem 'ruboty-leveldb'
+  gem 'ruboty-redis'
 end
