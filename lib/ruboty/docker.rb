@@ -2,6 +2,7 @@ require 'docker'
 require 'pp'
 require 'terminal-table'
 
+require 'ruboty'
 require 'ruboty/docker/version'
 require 'ruboty/docker/actions/base'
 require 'ruboty/docker/actions/build'
