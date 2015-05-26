@@ -4,9 +4,9 @@ machine:
   ruby:
     version: 2.2.2
 
-#dependencies:
-#  override:
-#    - docker run busybox echo hello world
+dependencies:
+  cache_directories:
+    - vendor/bundle
 
 test:
   override:
