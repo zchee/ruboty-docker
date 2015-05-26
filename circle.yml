@@ -1,6 +1,8 @@
 machine:
   timezone:
     Asia/Tokyo
+  services:
+    - redis
   ruby:
     version: 2.2.2
 
