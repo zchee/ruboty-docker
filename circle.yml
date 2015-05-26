@@ -4,6 +4,11 @@ machine:
   ruby:
     version: 2.2.2
 
+#dependencies:
+#  override:
+#    - docker run busybox echo hello world
+
 test:
-  post:
+  override:
+    - docker run busybox echo hello world
     - bundle exec rspec spec/
