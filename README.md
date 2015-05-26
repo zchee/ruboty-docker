@@ -1,6 +1,5 @@
 [![Gem](https://img.shields.io/gem/v/ruboty-docker.svg?style=flat)]()  [![Dependency Status](https://gemnasium.com/zchee/ruboty-docker.svg)](https://gemnasium.com/zchee/ruboty-docker)  
-[![Build Status](https://travis-ci.org/zchee/ruboty-docker.svg?branch=master)](https://travis-ci.org/zchee/ruboty-docker) 
-[![Circle CI](https://circleci.com/gh/zchee/ruboty-docker.svg?style=svg)](https://circleci.com/gh/zchee/ruboty-docker)  
+[![Circle CI](https://circleci.com/gh/zchee/ruboty-docker.png?56f6b413417787988a6a1d79a7d2a5eaf6560c20)](https://circleci.com/gh/zchee/ruboty-docker)  
 [![Coverage Status](https://coveralls.io/repos/zchee/ruboty-docker/badge.svg)](https://coveralls.io/r/zchee/ruboty-docker)
 [![Code Climate](https://codeclimate.com/github/zchee/ruboty-docker/badges/gpa.svg)](https://codeclimate.com/github/zchee/ruboty-docker)
 [![Test Coverage](https://codeclimate.com/github/zchee/ruboty-docker/badges/coverage.svg)](https://codeclimate.com/github/zchee/ruboty-docker/coverage)
